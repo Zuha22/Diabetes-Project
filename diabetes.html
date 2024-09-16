@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Diagnosis Tool</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .diagnosis-container {
+            text-align: center;
+        }
+
+        .diagnosis-result {
+            padding: 20px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 18px;
+        }
+
+        .symptom-question {
+            margin: 10px 0;
+            display: none;
+        }
+
+        .yes-no-button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+
+        .yes-no-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="diagnosis-container">
+        <div class="diagnosis-result" id="diagnosis-result">
+            <h2>Diabetes Diagnosis Result</h2>
+            <p id="result-text"></p>
+        </div>
+
+        <div class="symptom-question" id="polyuria">
+            <p>Do you experience polyuria? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('polyuria', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('polyuria', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="polydipsia">
+            <p>Do you experience polydipsia? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('polydipsia', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('polydipsia', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="weight-loss">
+            <p>Have you experienced weight loss recently? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('weight-loss', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('weight-loss', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="weakness">
+            <p>Do you feel weakness or fatigue? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('weakness', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('weakness', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="increased-appetite">
+            <p>Do you have an increased appetite? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('increased-appetite', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('increased-appetite', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="blurred-vision">
+            <p>Do you have blurred vision? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('blurred-vision', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('blurred-vision', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="persistent-itching">
+            <p>Have you noticed persistent itching? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('persistent-itching', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('persistent-itching', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="slow-healing">
+            <p>Do your wounds or cuts heal slowly? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('slow-healing', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('slow-healing', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="ketoacidosis">
+            <p>Have you ever experienced ketoacidosis? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('ketoacidosis', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('ketoacidosis', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="hypertension">
+            <p>Do you have Hypertension? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('hypertension', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('hypertension', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="obesity">
+            <p>Are you overweight or obese? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('obesity', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('obesity', false)">No</button>
+        </div>
+
+        <div class="symptom-question" id="family-history">
+            <p>Is there a family history of diabetes? (yes/no)</p>
+            <button class="yes-no-button" onclick="recordResponse('family-history', true)">Yes</button>
+            <button class="yes-no-button" onclick="recordResponse('family-history', false)">No</button>
+        </div>
+
+        <!-- Add more symptom blocks for other questions -->
+
+        <button class="yes-no-button" onclick="showNextQuestion()">Next Question</button>
+        <button class="yes-no-button" onclick="diabetesDiagnosis()">Get Diagnosis</button>
+    </div>
+
+    <script>
+        var symptoms = {};
+        var questions = document.querySelectorAll('.symptom-question');
+        var currentQuestionIndex = 0;
+
+        function recordResponse(symptom, response) {
+            symptoms[symptom] = response;
+            showNextQuestion();
+        }
+
+        function showNextQuestion() {
+            questions[currentQuestionIndex].style.display = 'none';
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                questions[currentQuestionIndex].style.display = 'block';
+            } else {
+                alert("You've answered all questions. Click 'Get Diagnosis' to see the result.");
+            }
+        }
+
+        function diabetesDiagnosis() {
+            // Your diagnosis logic can be implemented here
+            // For simplicity, let's display the result in the HTML
+            var resultElement = document.getElementById('result-text');
+            resultElement.textContent = "Diagnosis result: " + getDiagnosisResult();
+        }
+
+        function getDiagnosisResult() {
+            // Translate your diagnosis logic to JavaScript here
+            // Return the diagnosis result as a string
+            // For now, let's return a placeholder text
+            return "Type 1 Diabetes";
+        }
+
+        // Display the first question initially
+        questions[currentQuestionIndex].style.display = 'block';
+    </script>
+
+</body>
+</html>
